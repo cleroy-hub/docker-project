@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  database:
+    build: database
+    networks:
+      - projet
+
+  script-python:
+    build: script-python
+    networks:
+      - projet
+
+networks:
+  projet:
