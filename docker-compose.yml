@@ -1,15 +1,46 @@
-version: "3.7"
-
+version: '3'
 services:
-  database:
-    build: database
+  api:
+    build:
+      context: python
+      dockerfile: ../python/Dockerfile
+    restart: always
     networks:
-      - projet
+      - project
+    environment:
+      SQL_DB: 'docker_project'
+      SQL_USER: 'celine'
+      SQL_PASSWORD: 'leroy'
+      SQL_HOST: 'db'
+      SQL_PORT: '3306'
+    ports:
+      - '8000:8000'
+    expose:
+      - '8000'
 
-  script-python:
-    build: script-python
+  db:
+    build:
+      context: bdd
+      dockerfile: ../bdd/Dockerfile
+    restart: always
     networks:
-      - projet
+      - project
+    command: mysqld --sql_mode="" --init-file /script/init.sql
+    environment:
+      MYSQL_DATABASE: 'docker_project'
+      MYSQL_USER: 'celine'
+      MYSQL_PASSWORD: 'leroy'
+      MYSQL_ROOT_PASSWORD: 'leroy'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+#    volumes:
+#      - my-db:/var/lib/mysql
+## Names our volume
+#volumes:
+#  my-db:
 
 networks:
-  projet:
+  project:
+    driver: "bridge"

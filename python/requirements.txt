@@ -1,0 +1,5 @@
+Flask==1.1.2
+flask-sqlalchemy
+pymysql
+marshmallow_sqlalchemy
+marshmallow
